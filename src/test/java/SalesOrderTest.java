@@ -3,35 +3,65 @@ import org.example.OrderItemService;
 import org.example.SalesOrder;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.*;
 
 public class SalesOrderTest {
-    SalesOrder salesOrder;
-    OrderItemService orderItemService;
+    private SalesOrder salesOrder;
+    private OrderItemService orderItemService;
+    private OrderItem spyOi;
+    private OrderItem oi1;
+    private OrderItem oi2;
+    private static final String ORDER_ITEM_NAME_1 = "OrderItem #1";
+    private static final String ORDER_ITEM_NAME_2 = "OrderItem #2";
+    private static final String ORDER_ITEM_ACTION_ADD = "Add";
+    private static final String ORDER_ITEM_ACTION_MODIFY = "Modify";
+    private static final int ORDER_ITEM_ID_1 = 1;
+    private static final int ORDER_ITEM_ID_2 = 1;
+    private static final int ORDER_ITEM_PRICE_1 = 50;
+    private static final int ORDER_ITEM_DISCOUNT_PRICE = 70;
+    private static final int ORDER_ITEM_PRICE_2 = 150;
+    private static final int SALES_ORDER_PRICE = 200;
+
     @Before
     public void init() {
         salesOrder = new SalesOrder();
         orderItemService = mock(OrderItemService.class);
         salesOrder.setOrderItemService(orderItemService);
         List<OrderItem> orderItems = new ArrayList<>();
-        OrderItem oi1 = new OrderItem(1, "OrderItem #1", "Add");
-        OrderItem oi2 = new OrderItem(2, "OrderItem #2", "Add");
+        oi1 = new OrderItem(ORDER_ITEM_ID_1, ORDER_ITEM_NAME_1, ORDER_ITEM_ACTION_ADD);
+        oi2 = new OrderItem(ORDER_ITEM_ID_2, ORDER_ITEM_NAME_2, ORDER_ITEM_ACTION_ADD);
         orderItems.add(oi1);
         orderItems.add(oi2);
         salesOrder.setOrderItems(orderItems);
-        when(orderItemService.getOrderItemPrice(oi1)).thenReturn(50);
-        when(orderItemService.getOrderItemPrice(oi2)).thenReturn(150);
+        when(orderItemService.getOrderItemPrice(oi1)).thenReturn(ORDER_ITEM_PRICE_1);
+        when(orderItemService.getOrderItemPrice(oi2)).thenReturn(ORDER_ITEM_PRICE_2);
+        spyOi = spy(oi1);
+    }
+
+    @Test
+    public void verifyDiscountPrice(){
+        orderItemService.getDiscountPrice(ORDER_ITEM_DISCOUNT_PRICE);
+        Mockito.verify(orderItemService).getDiscountPrice(ORDER_ITEM_DISCOUNT_PRICE);
+        Mockito.verify(orderItemService, times(1)).getDiscountPrice(ORDER_ITEM_DISCOUNT_PRICE);
     }
 
     @Test
     public void checkSalesOrderPrice() {
         int value = salesOrder.getSalesOrderPrice();
-        assertEquals(200, value);
+        assertEquals(SALES_ORDER_PRICE, value);
+    }
+
+    @Test
+    public void verifyOrderItemSpyOnRealInstance(){
+        spyOi.setAction(ORDER_ITEM_ACTION_MODIFY);
+        assertNotEquals(spyOi.getAction(), oi1.getAction());
+        assertEquals(ORDER_ITEM_ACTION_MODIFY, spyOi.getAction());
     }
 }
