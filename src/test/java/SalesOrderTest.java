@@ -1,6 +1,5 @@
-import org.example.OrderItem;
-import org.example.OrderItemService;
-import org.example.SalesOrder;
+import org.example.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -13,7 +12,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.*;
 
 public class SalesOrderTest {
-    private SalesOrder salesOrder;
+    private  SalesOrder salesOrder ;
     private OrderItemService orderItemService;
     private OrderItem spyOi;
     private OrderItem oi1;
@@ -28,6 +27,7 @@ public class SalesOrderTest {
     private static final int ORDER_ITEM_DISCOUNT_PRICE = 70;
     private static final int ORDER_ITEM_PRICE_2 = 150;
     private static final int SALES_ORDER_PRICE = 200;
+
 
     @Before
     public void init() {
