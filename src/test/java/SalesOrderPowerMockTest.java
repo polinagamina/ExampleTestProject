@@ -11,7 +11,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DiscountService.class, OfferService.class })
-//@PowerMockIgnore("jdk.internal.reflect.*")
 public class SalesOrderPowerMockTest {
     DiscountService discountService;
     private final int TEST_VALUE1 = 170;
@@ -33,7 +32,9 @@ public class SalesOrderPowerMockTest {
     @Test
     public void checkCreateDiscountReturnValue() {
         Assert.assertEquals(discountService.createDiscount(TEST_VALUE1), RESULT_VALUE1,DELTA);
+        Mockito.verify(discountService).createDiscount (TEST_VALUE1);
         Assert.assertEquals(discountService.createDiscount(TEST_VALUE2), RESULT_VALUE2,DELTA);
+        Mockito.verify(discountService).createDiscount (TEST_VALUE2);
     }
     @Test
     public void mockStaticClassTest() {
