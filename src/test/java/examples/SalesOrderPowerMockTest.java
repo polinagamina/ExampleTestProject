@@ -1,16 +1,20 @@
+package examples;
+
+import category.SalesOrderTestCategory;
 import org.example.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DiscountService.class, OfferService.class })
+@Category(SalesOrderTestCategory.class)
 public class SalesOrderPowerMockTest {
     DiscountService discountService;
     private final int TEST_VALUE1 = 170;
@@ -30,6 +34,7 @@ public class SalesOrderPowerMockTest {
     }
 
     @Test
+
     public void checkCreateDiscountReturnValue() {
         Assert.assertEquals(discountService.createDiscount(TEST_VALUE1), RESULT_VALUE1,DELTA);
         Mockito.verify(discountService).createDiscount (TEST_VALUE1);

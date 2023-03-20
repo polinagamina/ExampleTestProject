@@ -1,7 +1,10 @@
+package examples;
+
+import category.SalesOrderTestCategory;
 import org.example.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -46,6 +49,7 @@ public class SalesOrderTest {
     }
 
     @Test
+    @Category(SalesOrderTestCategory.class)
     public void verifyDiscountPrice(){
         orderItemService.getDiscountPrice(ORDER_ITEM_DISCOUNT_PRICE);
         Mockito.verify(orderItemService).getDiscountPrice(ORDER_ITEM_DISCOUNT_PRICE);
@@ -53,12 +57,14 @@ public class SalesOrderTest {
     }
 
     @Test
+    @Category(SalesOrderTestCategory.class)
     public void checkSalesOrderPrice() {
         int value = salesOrder.getSalesOrderPrice();
         assertEquals(SALES_ORDER_PRICE, value);
     }
 
     @Test
+    @Category(SalesOrderTestCategory.class)
     public void verifyOrderItemSpyOnRealInstance(){
         spyOi.setAction(ORDER_ITEM_ACTION_MODIFY);
         assertNotEquals(spyOi.getAction(), oi1.getAction());
